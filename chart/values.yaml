@@ -2,4 +2,4 @@ app:
   version: v0.0.0
 image:
   repository: justhumanz/humanz-argo
-  image_tag: ecad55220e5267404d7f5cbc0e1104a92a588de8
+  image_tag: a1245dc1eccaa79a9de0017a7846d6288d161cf5
