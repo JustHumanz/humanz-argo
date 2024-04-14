@@ -64,4 +64,4 @@ jobs:
         git config --global user.name 'Humanz'
         git config --global user.email 'Just@Humanz.moe'
         git commit -am "updating image tag"
-        git push
+        git push origin master
