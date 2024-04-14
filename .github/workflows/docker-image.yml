@@ -61,8 +61,8 @@ jobs:
         sed -i 's/'$(grep -o -E "v([0-9]{1,}\.)+[0-9]{1,}" ${value_file})'/'${app_release_ver}'/g' ${value_file}
     - name: Commit the changes made
       run: | 
-        git config --global user.name 'Humanz'
+        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email 'Just@Humanz.moe'
-        git add chart
+        git add --all
         git commit -am "updating image&app tag"
-        git push origin master
+        git push -u origin master
