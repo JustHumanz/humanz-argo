@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: humanz-argo
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: humanz-argo
+  template:
+    metadata:
+      labels:
+        app: humanz-argo
+    spec:
+      containers:      
+        - name: go-server
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}" 
+          ports:
+            - containerPort: 2525
+          env:
+          - name: VERSION
+            value: "{{ .Values.app.version }}"            
