@@ -49,19 +49,21 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV        
+      run: |
+        echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        echo "chart/values.yaml" >> $VAL_FILE
+        echo ${{ github.sha }} >> $IMAGE_TAG
 
     - name: Update Image Tag Values
       run: |
-        chart_dir="chart"
-        value_file=$chart_dir/values.yaml
-        new_image_tag=${{ github.sha }}
-
         # Update the values.yaml file with the new image tag
-        sed -i 's/'$(grep -o -E "[A-Fa-f0-9]{40}" ${value_file})'/'${new_image_tag}'/g' ${value_file}  
-  
+        sed -i 's/'$(grep -o -E "[A-Fa-f0-9]{40}" ${VAL_FILE})'/'${IMAGE_TAG}'/g' ${VAL_FILE}  
+
+    - name: Update App version
+      run: |
         # Update app tag version
-        sed -i 's/'$(grep -o -E "v.([0-9]{1,}\.)+[0-9]{1,}" ${value_file})'/'${RELEASE_VERSION}'/g' ${value_file}
+        sed -i 's/'$(grep -o -E "v.([0-9]{1,}\.)+[0-9]{1,}" ${VAL_FILE})'/'${RELEASE_VERSION}'/g' ${VAL_FILE}
+
     - name: Commit the changes made
       run: | 
         git config --global user.name 'Humanz'
