@@ -38,3 +38,33 @@ jobs:
           context: .
           push: true
           tags: justhumanz/humanz-argo:${{ github.sha }}
+
+  update:
+    name: Update Helm Manifests
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV        
+
+    - name: Update Image Tag Values
+      run: |
+        chart_dir="chart"
+        value_file=$chart_dir/values.yaml
+        new_image_tag=${{ github.sha }}
+
+        # Update the values.yaml file with the new image tag
+        sed -i 's/'$(grep -o -E "[A-Fa-f0-9]{40}" ${value_file})'/'${new_image_tag}'/g' ${value_file}  
+  
+        # Update app tag version
+        sed -i 's/'$(grep -o -E "v.([0-9]{1,}\.)+[0-9]{1,}" ${value_file})'/'${RELEASE_VERSION}'/g' ${value_file}
+    - name: Commit the changes made
+      run: | 
+        git config --global user.name 'Humanz'
+        git config --global user.email 'Just@Humanz.moe'
+        git commit -am "updating image tag"
+        git push
