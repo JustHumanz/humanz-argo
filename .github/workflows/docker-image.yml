@@ -3,7 +3,7 @@ name: build & deploy go-simp modules
 on:
   push:
     branches:
-    - main
+    - master
     paths:
     - 'main.go'
     - 'chart/'
