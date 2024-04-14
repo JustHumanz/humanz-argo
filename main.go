@@ -14,7 +14,7 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
-	version := getEnv("VERSION", "v.0.0")
+	version := getEnv("VERSION", "v.0.0.0")
 	// Register the handler function for the root ("/") route
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Write the response to the client
