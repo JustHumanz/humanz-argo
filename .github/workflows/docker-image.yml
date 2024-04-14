@@ -63,5 +63,6 @@ jobs:
       run: | 
         git config --global user.name 'Humanz'
         git config --global user.email 'Just@Humanz.moe'
-        git commit -am "updating image tag"
+        git add chart
+        git commit -am "updating image&app tag"
         git push origin master
